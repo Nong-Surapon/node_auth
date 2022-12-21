@@ -1,1 +1,1 @@
-20221221	16:01:16	884d428a-f3a4-4329-82ac-4add52677632	TypeError: fsPromises.readFiles is not a function
+20221221	18:32:32	120d23f8-1c1b-41c9-a828-5f5307c1542d	Error: Not allowed by CORS
