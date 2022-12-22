@@ -4,82 +4,26 @@ const path = require('path')
 const cors = require('cors')
 const { logger } = require('./middleward/logEvents')
 const errorHandle = require('./middleward/errorHandle')
+const corsOptions = require('./config/corsOptions')
 const PORT = process.env.PORT || 3500
 
 // custom middleware logger
 app.use(logger)
 
-// Cross Origin Resource Sharing
-const whitelist = [
-  'https://www.google.com',
-  'http://127.0.0.1:5500',
-  'http://localhost:3500',
-]
-const corsOptions = {
-  origin: (origin, callback) => {
-    if (whitelist.indexOf(origin) !== -1 || !origin) {
-      callback(null, true)
-    } else {
-      callback(new Error('Not allowed by CORS'))
-    }
-  },
-  optionsSuccessStatus: 200,
-}
 app.use(cors(corsOptions))
 
-// build-in middleware to handle urlencoded data
-// in other words, data:
-// content-type: application/x-www-form-urlencoded
+// build-in middleware to handle urlencoded form data
 app.use(express.urlencoded({ extended: false }))
 
 // built-in middleware for json
 app.use(express.json())
 
-// server static files
-app.use(express.static(path.join(__dirname, '/public')))
+// server static files (css,image)
+app.use('/', express.static(path.join(__dirname, '/public')))
 
-app.get('^/$|/index(.html)?', (req, res) => {
-  // res.sendFile('./views/index.html', { root: __dirname })
-  res.sendFile(path.join(__dirname, 'views', 'index.html'))
-})
-
-app.get('/new-page(.html)?', (req, res) => {
-  res.sendFile(path.join(__dirname, 'views', 'new-page.html'))
-})
-
-app.get('/old-page(.html)?', (req, res) => {
-  res.redirect(301, '/new-page.html') // 302 by default
-})
-
-// Route handles
-app.get(
-  '/hello(.html)?',
-  (req, res, next) => {
-    console.log('attempted to load hello.html')
-    next()
-  },
-  (req, res) => {
-    res.send('Hello World!')
-  },
-)
-
-// chaining route handles
-const one = (req, res, next) => {
-  console.log('one')
-  next()
-}
-
-const two = (req, res, next) => {
-  console.log('two')
-  next()
-}
-
-const three = (req, res) => {
-  console.log('three')
-  res.send('Finished!')
-}
-
-app.get('/chain(.html)?', [one, two, three])
+// routes
+app.use('/', require('./routes/root'))
+app.use('/employees', require('./routes/api/employees'))
 
 // Handle 404 not found
 app.all('*', (req, res) => {
