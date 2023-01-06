@@ -8,3 +8,5 @@
 20221227	14:30:14	a962b1b2-b485-4f22-a767-8a43c57db071	ReferenceError: cookie is not defined
 20221227	14:31:48	27c3be77-5c1a-4fe4-8907-e1eddbbaaf59	ReferenceError: cookie is not defined
 20221227	14:31:49	ba69bfc1-9975-4fa7-bad6-b3a86e936d20	ReferenceError: cookie is not defined
+20230106	16:35:09	3cf954da-d747-4938-b314-1919cb56771f	TypeError: authHeader?.startWith is not a function
+20230106	16:35:21	860041cd-2d0c-4716-aeab-4e7399d23df2	TypeError: authHeader?.startWith is not a function
